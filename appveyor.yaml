@@ -1,0 +1,32 @@
+os: Visual Studio 2013
+
+environment:
+  matrix:
+  - Compiler: mingw
+
+
+
+cache:
+  - C:\mingw64
+
+install:
+  - ps: |
+      if ($env:Compiler -eq "mingw" -AND -Not (Test-Path "C:\mingw64")) {
+        # Install MinGW.
+        $file = "x86_64-4.9.2-release-win32-seh-rt_v4-rev3.7z"
+        wget https://bintray.com/artifact/download/drewwells/generic/$file -OutFile $file
+        &7z x -oC:\ $file > $null
+      }
+  - set PATH=C:\mingw64\bin;%PATH%
+  - set CC=gcc
+
+build_script:
+  - ps: |
+      if ($env:Compiler -eq "mingw") {
+        cd ./app/convbin/gcc 
+        mingw32-make -j4 clean all
+      }
+
+test_script:
+  - ps: | 
+      echo "Tests go here"
