@@ -27,6 +27,10 @@ build_script:
         mingw32-make -j4 clean all
       }
 
+artifacts:
+  - path: ./app/convbin/gcc/convbin
+    name: convbin
+
 test_script:
   - ps: | 
       echo "Tests go here"
